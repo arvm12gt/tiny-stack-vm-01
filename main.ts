@@ -55,7 +55,8 @@ return[Buffer.from(o),e];
 }
 if(process.argv[1]&&process.argv[1].endsWith('main.ts')){
 const I=process.env.MAKEFUN_INPUT_DIR??'/input',O=process.env.MAKEFUN_OUTPUT_DIR??'/output';
-for(const id of readdirSync(I).sort()){
+for(const d of readdirSync(I,{withFileTypes:true}).filter(d=>d.isDirectory()).map(d=>d.name).sort()){
+const id=d;
 const[stdout,code]=runVM(readFileSync(join(I,id,'program.bin')),readFileSync(join(I,id,'input.bin')));
 mkdirSync(join(O,id),{recursive:true});
 writeFileSync(join(O,id,'stdout.bin'),stdout);
